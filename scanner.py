@@ -24,14 +24,14 @@ def validate_input():
     return sys.argv[1:]
 
 
-def check_path(path):
+def validate_path(path):
     '''Check if a path is valid'''
     if not os.path.exists(path):
         print 'Error - path not valid'
         exit(1)
 
 
-def start(path):
+def scan(path):
     '''Iterate through path recursively and generate creation commands'''
     all_commands = []
     for root, subdirs, files in os.walk(path, followlinks=True):
@@ -78,7 +78,7 @@ def get_permissions_octal(path):
     return all_permission_bits
 
 
-def generate_script(all_commands, outfile):
+def generate_script_file(all_commands, outfile):
     '''Write commands to outfile'''
     outfile = os.path.normpath(os.path.realpath(os.path.expandvars(outfile)))
     with open(outfile, 'w') as final_file:
@@ -89,9 +89,9 @@ def generate_script(all_commands, outfile):
 def process():
     '''Record permission info about path'''
     path, outfile = validate_input()
-    check_path(path)
-    all_commands = start(path)
-    generate_script(all_commands, outfile)
+    validate_path(path)
+    folder_creation_commands = scan(path)
+    generate_script_file(folder_creation_commands, outfile)
 
 
 process()
