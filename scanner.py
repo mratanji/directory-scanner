@@ -54,7 +54,10 @@ def get_owner(path):
     '''Get the username for the owner of path'''
     stat_info = os.stat(path)
     uid = stat_info.st_uid
-    username = pwd.getpwuid(uid).pw_name
+    try:
+        username = pwd.getpwuid(uid).pw_name
+    except:
+        username = str(uid)
     return username
 
 
@@ -62,7 +65,10 @@ def get_group(path):
     '''Get the group name for the owner of path'''
     stat_info = os.stat(path)
     gid = stat_info.st_gid
-    group = grp.getgrgid(gid).gr_name
+    try:
+        group = grp.getgrgid(gid).gr_name
+    except:
+        group = str(gid)
     return group
 
 
